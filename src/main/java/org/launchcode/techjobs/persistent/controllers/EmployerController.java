@@ -19,7 +19,7 @@ public class EmployerController {
     @Autowired
     private EmployerRepository employerRepository;
 
-    @GetMapping("/")
+    @GetMapping("/") //changed from /
     public String index(Model model) {
         List<Employer> employers = (List<Employer>) employerRepository.findAll();
         model.addAttribute("employers", employers);
@@ -28,7 +28,7 @@ public class EmployerController {
 
     @GetMapping("add")
     public String displayAddEmployerForm(Model model) {
-        model.addAttribute(new Employer());
+        model.addAttribute(new Employer()); //"employer"?
         return "employers/add";
     }
 
@@ -37,11 +37,12 @@ public class EmployerController {
                                     Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+
             return "employers/add";
         }
 
         employerRepository.save(newEmployer);
-        return "redirect:/employers";
+        return "redirect:"; //deleted /employers
     }
 
     @GetMapping("view/{employerId}")
@@ -50,10 +51,10 @@ public class EmployerController {
         Optional optEmployer = employerRepository.findById(employerId);
         if (optEmployer.isPresent()) {
             Employer employer = (Employer) optEmployer.get();
-            model.addAttribute("employer", employer);
-            return "employers/view";
+            model.addAttribute("employer", employer); //removed s from skills and employers
+            return "employers/view"; //
         } else {
-            return "redirect:/employers";
+            return "redirect:../";
         }
 
     }
